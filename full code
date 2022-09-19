@@ -23,7 +23,7 @@ deaths = [90,4000,16,3103,179,184,408,682,5,1023,43,319,688,259,37,11,2068,269,3
 # Update Recorded Damages
 conversion = {"M": 1000000,
               "B": 1000000000}
-def covert_damages(damages):
+def convert_damages(damages):
   updated_damages = []
   for damage in damages:
     if damage[-1] == 'M':
@@ -33,8 +33,8 @@ def covert_damages(damages):
     updated_damages.append(damage)
   return updated_damages
 # test function by updating damages
-updated_damages = covert_damages(damages)
-#print(covert_damages(damages))
+updated_damages = convert_damages(damages)
+#print(convert_damages(damages))
 
 # 2 
 # Create a Table
@@ -140,13 +140,23 @@ def hc_by_rating(dictionary):
   return new_dict
 # categorize hurricanes in new dictionary with mortality severity as key
 sorted_ratings = dict(sorted(hc_by_rating(dictionary_1).items()))
-print(sorted_ratings)
+#print(sorted_ratings)
 
 # 8 Calculating Hurricane Maximum Damage
-
+def costliest_hc(dictionary):
+  max_damage = 0
+  for hc in dictionary:
+    if type(dictionary[hc]['Damage']) != str:
+      if dictionary[hc]['Damage'] > max_damage:
+        max_damage = dictionary[hc]['Damage']
+        name = hc
+  return {hc: max_damage}
 # find highest damage inducing hurricane and its total cost
-
-
+print(costliest_hc(dictionary_1))
+# for i in range(4):
+#   updated_damages.remove('Damages not recorded')
+# updated_damages.sort()
+# print(updated_damages)
 # 9
 # Rating Hurricanes by Damage
 damage_scale = {0: 0,
@@ -154,5 +164,21 @@ damage_scale = {0: 0,
                 2: 1000000000,
                 3: 10000000000,
                 4: 50000000000}
-  
+def hc_by_damage(dictionary):
+  new_dict = {0:[],1:[],2:[],3:[],4:[]}
+  for hc in dictionary:
+    damage = dictionary[hc]['Damage']
+    if damage == 'Damages not recorded':
+      rating = 0
+    elif damage > 0 and damage <= 100000000:
+      rating = 1
+    elif damage > 100000000 and damage <= 1000000000:
+      rating = 2
+    elif damage > 1000000000 and damage <= 10000000000:
+      rating = 3
+    else:
+      rating = 4
+    new_dict[rating].append(dictionary[hc])
+  return new_dict
 # categorize hurricanes in new dictionary with damage severity as key
+print(hc_by_damage(dictionary_1))
